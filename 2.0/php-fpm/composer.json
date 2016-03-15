@@ -42,7 +42,7 @@
     },
     "config": {
         "process-timeout": 1800,
-		"vendor-dir": "/var/www/vendor"
+		"vendor-dir": "/var/www/html/vendor"
     },
     "extra": {
     "yii\\composer\\Installer::postCreateProject": {
