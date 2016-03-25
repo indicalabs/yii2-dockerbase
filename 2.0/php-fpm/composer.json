@@ -26,13 +26,14 @@
 		"yiisoft/yii2-jui":"2.0.5",
 		"yiisoft/yii2-authclient":"2.0.5",
 		"yiisoft/yii2-imagine":"2.0.3",
+		"aws/aws-php-sns-message-validator":"1.1.0",
 		"aws/aws-sdk-php":"3.17.1",
 		"twilio/sdk":"dev-master",
 		"paypal/rest-api-sdk-php":"v1.6.4",
 		"yiisoft/yii2-apidoc":"2.0.5",
 		"indicalabs/yii2-select2":"dev-master",
 		"indicalabs/yii2-googleplaces":"dev-master",
-		"indicalabs/yii2-mongodb":"2.0.x-dev"
+		"hardsetting/yii2-mongodb":"dev-master"
 	},
 	"require-dev":{
 		"yiisoft/yii2-codeception":"2.0.5",
