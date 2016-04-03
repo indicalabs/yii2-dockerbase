@@ -1,58 +1,62 @@
-FROM php:7-fpm
+FROM php:5.6-fpm
 
 MAINTAINER haertl.mike@gmail.com
 
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 # PHP extensions come first, as they are less likely to change between Yii releases
-RUN /bin/bash -c ' \
-	apt-get update; \
-    apt-get -y install \
-	git \
-	g++ \
-	libicu-dev \
-	libmcrypt-dev \
-	zlib1g-dev \
-	libsasl2-dev \
-	libcurl4-openssl-dev \
-	libssl-dev \
-	pkg-config \
-	openssl	\
-	mongodb \
-	libmagickwand-dev \
-	--no-install-recommends; \
+RUN apt-get update \
+    && apt-get -y install \
+            git \
+            g++ \
+            libicu-dev \
+            libmcrypt-dev \
+            zlib1g-dev \
+            libsasl2-dev \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            pkg-config \
+            openssl	\
+            mongodb \
+            libmagickwand-dev \
+        --no-install-recommends \
 
     # Install PHP extensions
-    docker-php-ext-install intl; \
-    docker-php-ext-install pdo_mysql; \
-    docker-php-ext-install mbstring; \
-    docker-php-ext-install mcrypt; \
-    docker-php-ext-install zip; \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install mbstring \
+    && docker-php-ext-install mcrypt \
+    && docker-php-ext-install zip \
     
-    pecl install apcu-5.1.3 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini; \
-	pecl install mongodb && docker-php-ext-enable mongodb; \
-	#echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`; \
-	pecl install imagick-3.4.1 && docker-php-ext-enable imagick; \    
-	echo "Venu -->".`php -m`; \
-    apt-get purge -y g++; \
-    apt-get autoremove -y; \
-    rm -r /var/lib/apt/lists/*; \
+    && pecl install apcu-4.0.10 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+# Remove the above with the below for php7
+   # && pecl install apcu-5.1.3 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+   
+    && pecl install mongo && docker-php-ext-enable mongo \
+# Remove the above with the below for php7	
+	&& pecl install mongodb && docker-php-ext-enable mongodb \
+	#echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` \
+	
+	&& pecl install imagick-3.4.1 && docker-php-ext-enable imagick \    
+	&& echo "Venu -->".`php -m` \
+    && apt-get purge -y g++ \
+    && apt-get autoremove -y \
+    && rm -r /var/lib/apt/lists/* \
 
     # Don't clear our valuable environment vars in PHP
-    echo "\nclear_env = no" >> /usr/local/etc/php-fpm.conf; \
+    && echo "\nclear_env = no" >> /usr/local/etc/php-fpm.conf \
 
     # Fix write permissions with shared folders
-    usermod -u 1000 www-data';
+    && usermod -u 1000 www-data
 
 # Next composer and global composer package, as their versions may change from time to time
-RUN /bin/bash -c ' \
-	curl -sS https://getcomposer.org/installer | php; \
-    mv composer.phar /usr/local/bin/composer.phar; \
-    composer.phar global require --no-progress "fxp/composer-asset-plugin:~1.1.1"; \
-    composer.phar global require --no-progress "codeception/codeception=2.0.*"; \
-    composer.phar global require --no-progress "codeception/specify=*"; \
-    composer.phar global require --no-progress "codeception/verify=*"; \ 
-    composer.phar clear-cache';
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer.phar \
+    && composer.phar global require --no-progress "fxp/composer-asset-plugin:~1.1.1" \
+    && composer.phar global require --no-progress "codeception/codeception=2.0.*" \
+    && composer.phar global require --no-progress "codeception/specify=*" \
+    && composer.phar global require --no-progress "codeception/verify=*" \ 
+    && rm -rf ~/.composer/cache
 
 # Nginx example config and composer wrapper
 COPY nginx /opt/nginx
@@ -66,7 +70,5 @@ WORKDIR /var/www/html
 COPY composer.json /var/www/html/
 #COPY composer.lock /var/www/html/
 COPY config.json /root/.composer/config.json
-RUN /bin/bash -c ' \
-#	composer install --prefer-dist --no-progress; \
-	composer update --prefer-dist --no-progress; \
-	rm composer.*;'
+RUN composer install --prefer-dist --no-progress \
+    && rm composer.*
