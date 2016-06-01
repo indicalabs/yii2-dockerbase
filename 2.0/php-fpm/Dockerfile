@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FROM php:7-fpm
 
 MAINTAINER haertl.mike@gmail.com
 
@@ -27,13 +27,15 @@ RUN apt-get update \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install mcrypt \
     && docker-php-ext-install zip \
-    
-    && pecl install apcu-4.0.10 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
-# Remove the above with the below for php7
-   # && pecl install apcu-5.1.3 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
-   
-    && pecl install mongo && docker-php-ext-enable mongo \
-# Remove the above with the below for php7	
+
+# for php 5.6    
+  #  && pecl install apcu-4.0.10 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+# for php7
+    && pecl install apcu-5.1.4 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+ 
+# for php 5.6  
+ #   && pecl install mongo && docker-php-ext-enable mongo \
+# for php7	
 	&& pecl install mongodb && docker-php-ext-enable mongodb \
 	#echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` \
 	
