@@ -54,7 +54,7 @@ RUN apt-get update \
 # Next composer and global composer package, as their versions may change from time to time
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer.phar \
-    && composer.phar global require --no-progress "fxp/composer-asset-plugin:~1.1.1" \
+    && composer.phar global require --no-progress "fxp/composer-asset-plugin:@dev" \
     && composer.phar global require --no-progress "codeception/codeception=2.0.*" \
     && composer.phar global require --no-progress "codeception/specify=*" \
     && composer.phar global require --no-progress "codeception/verify=*" \ 
@@ -69,8 +69,8 @@ WORKDIR /var/www/html
 # Composer packages are installed outside the app directory /var/www/html.
 # This way developers can mount the source code from their host directory
 # into /var/www/html and won't end up with an empty vendors/ directory.
-COPY composer.json /var/www/html/
-#COPY composer.lock /var/www/html/
+#  remove all the below comments after devlopment
+#COPY composer.json /var/www/html/
 COPY config.json /root/.composer/config.json
-RUN composer install --prefer-dist --no-progress \
-    && rm composer.*
+#RUN composer install --prefer-dist --no-progress \
+#    && rm composer.*
