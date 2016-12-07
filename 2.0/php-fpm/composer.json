@@ -20,24 +20,25 @@
 	"minimum-stability":"dev",
 	"require":{
 		"php":">=5.4.0",
-		"yiisoft/yii2":">=2.0.9",
+		"yiisoft/yii2":"dev-master",
 		"yiisoft/yii2-bootstrap":"dev-master",
 		"yiisoft/yii2-swiftmailer":"dev-master",
 		"yiisoft/yii2-jui":"dev-master",
 		"yiisoft/yii2-authclient":"dev-master",
 		"yiisoft/yii2-imagine":"dev-master",
-		"aws/aws-php-sns-message-validator":"*",
-		"aws/aws-sdk-php":"3.17.1",
-		"twilio/sdk":"dev-master",
-		"paypal/rest-api-sdk-php":"v1.6.4",
+		"aws/aws-php-sns-message-validator":"1.1.0",
+		"aws/aws-sdk-php":"3.20.2",
+		"twilio/sdk":"5.4.2",
+		"paypal/rest-api-sdk-php":"1.10.0",
 		"yiisoft/yii2-apidoc":"dev-master",
 		"indicalabs/yii2-select2":"dev-master",
 		"indicalabs/yii2-googleplaces":"dev-master",
 		"indicalabs/yii2-phone":"dev-master",
 		"indicalabs/yii2-prettyphoto":"dev-master",
 		"indicalabs/yii2-plupload":"dev-master",
-		"mongodb/mongodb":"1.0.2",
+		"mongodb/mongodb":"1.1.0",
 		"yiisoft/yii2-mongodb":"dev-master",
+		"yiisoft/yii2-redis":"dev-master",
 		"indicalabs/yii2-geolocation":"dev-master"
 	},
 	"require-dev":{
@@ -47,16 +48,14 @@
 		"yiisoft/yii2-faker":"dev-master"
 	},
 	"scripts":{
-		"post-create-project-cmd":[
-			"yii\\composer\\Installer::postCreateProject"
-		]
+		 "post-install-cmd": "php init --env=Development --overwrite=n"
 		
 	},
 	"config":{
 		"process-timeout":1800
 	},
 	"extra":{
-		"yii\\composer\\Installer::postCreateProject":{
+		"yii\\composer\\Installer::postInstall":{
 			"setPermission":[
 				{
 					"backend/runtime":"0777",
