@@ -31,15 +31,15 @@ RUN apt-get update \
 # for php 5.6    
   #  && pecl install apcu-4.0.10 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
 # for php7
-    && pecl install apcu-5.1.4 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+    && pecl install apcu-5.1.7 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
  
 # for php 5.6  
  #   && pecl install mongo && docker-php-ext-enable mongo \
 # for php7	
-	&& pecl install mongodb && docker-php-ext-enable mongodb \
+	&& pecl install mongodb-1.2.0 && docker-php-ext-enable mongodb \
 	#echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` \
 	
-	&& pecl install imagick-3.4.1 && docker-php-ext-enable imagick \    
+	&& pecl install imagick-3.4.3RC1 && docker-php-ext-enable imagick \    
 	&& echo "Venu -->".`php -m` \
     && apt-get purge -y g++ \
     && apt-get autoremove -y \
@@ -72,5 +72,5 @@ WORKDIR /var/www/html
 #  remove all the below comments after devlopment
 #COPY composer.json /var/www/html/
 COPY config.json /root/.composer/config.json
-#RUN composer install --prefer-dist --no-progress \
+# RUN composer install --prefer-dist --no-progress \
 #    && rm composer.*
