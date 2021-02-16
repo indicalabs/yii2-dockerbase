@@ -12,7 +12,8 @@ RUN apt-get update \
             libicu-dev \
             libsasl2-dev \
             openssl	\
-#             mongodb \
+            libssl-dev \
+            libcurl4-openssl-dev \
             libmagickwand-dev \
             libzip-dev \
             zip \
@@ -36,10 +37,12 @@ RUN apt-get update \
  #   && pecl install mongo && docker-php-ext-enable mongo \
 # for php7	
 	&& pecl install mongodb && docker-php-ext-enable mongodb \
-	#echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` \
+	&& echo "extension=mongodb.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` \
 	
 # 	&& pecl install imagick && docker-php-ext-enable imagick \
-	&& echo "Venu -->".`php -m` \
+	&& echo "Venu1 -->".`php -m` \
+	&& echo "Venu2 -->".`php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"` \
+	&& echo "Venu3 -->".`php --ini` \
     && apt-get purge -y g++ \
     && apt-get autoremove -y \
     && rm -r /var/lib/apt/lists/* \
@@ -48,7 +51,8 @@ RUN apt-get update \
     && echo "\nclear_env = no" >> /usr/local/etc/php-fpm.conf \
 
     # Fix write permissions with shared folders
-    && usermod -u 1000 www-data
+    && usermod -u 1000 www-data \
+    && apt-get clean
 
 # Next composer and global composer package, as their versions may change from time to time
 RUN curl -sS https://getcomposer.org/installer | php \
