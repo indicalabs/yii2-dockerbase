@@ -11,51 +11,59 @@
 	"type":"project",
 	"license":"BSD-3-Clause",
 	"support":{
-		"issues":"https://github.com/yiisoft/yii2/issues?state=open",
-		"forum":"http://www.yiiframework.com/forum/",
-		"wiki":"http://www.yiiframework.com/wiki/",
-		"irc":"irc://irc.freenode.net/yii",
-		"source":"https://github.com/yiisoft/yii2"
+		"issues": "https://github.com/yiisoft/yii2/issues?state=open",
+		"forum": "http://www.yiiframework.com/forum/",
+		"wiki": "http://www.yiiframework.com/wiki/",
+		"irc": "irc://irc.freenode.net/yii",
+		"source": "https://github.com/yiisoft/yii2"
 	},
 	"minimum-stability":"dev",
 	"require":{
-		"php":">=5.4.0",
-		"yiisoft/yii2":"dev-master",
-		"yiisoft/yii2-bootstrap":"dev-master",
-		"yiisoft/yii2-swiftmailer":"dev-master",
-		"yiisoft/yii2-jui":"dev-master",
-		"yiisoft/yii2-authclient":"dev-master",
-		"yiisoft/yii2-imagine":"dev-master",
-		"aws/aws-php-sns-message-validator":"1.1.0",
-		"aws/aws-sdk-php":"3.20.2",
-		"twilio/sdk":"5.4.2",
-		"paypal/rest-api-sdk-php":"1.10.0",
+		"php":"^7.4|^8.0",
+		"yiisoft/yii2":"2.0.40",
+		"yiisoft/yii2-bootstrap":"~2.0.0",
+		"yiisoft/yii2-swiftmailer":"~2.0.0 || ~2.1.0",
+		"yiisoft/yii2-jui":"2.0.7",
+		"yiisoft/yii2-authclient":"2.2.9",
+		"yiisoft/yii2-imagine":"2.3.0",
+		"aws/aws-php-sns-message-validator":"1.6.0",
+		"aws/aws-sdk-php":"3.173.9",
+		"twilio/sdk":"6.17.0",
+		"paypal/rest-api-sdk-php":"1.14.0",
 		"yiisoft/yii2-apidoc":"dev-master",
 		"indicalabs/yii2-select2":"dev-master",
-		"indicalabs/yii2-googleplaces":"dev-master",
 		"indicalabs/yii2-phone":"dev-master",
 		"indicalabs/yii2-prettyphoto":"dev-master",
 		"indicalabs/yii2-plupload":"dev-master",
-		"mongodb/mongodb":"1.1.0",
-		"yiisoft/yii2-mongodb":"dev-master",
-		"yiisoft/yii2-redis":"dev-master",
+		"mongodb/mongodb":"1.8.0",
+		"yiisoft/yii2-mongodb":"2.1.11",
+		"yiisoft/yii2-redis":"2.0.14",
 		"indicalabs/yii2-geolocation":"dev-master"
 	},
 	"require-dev":{
-		"yiisoft/yii2-codeception":"2.0.5",
-		"yiisoft/yii2-debug":"dev-master",
-		"indicalabs/yii2-gii":"dev-master",
-		"yiisoft/yii2-faker":"dev-master"
+		"yiisoft/yii2-debug": "~2.1.0",
+		"yiisoft/yii2-gii": "~2.1.0",
+		"yiisoft/yii2-faker": "~2.0.0",
+		"codeception/codeception": "^4.0",
+		"codeception/verify": "~0.5.0 || ~1.1.0",
+		"codeception/specify": "~0.4.6",
+		"symfony/browser-kit": ">=2.7 <=4.2.4",
+		"codeception/module-filesystem": "^1.0.0",
+		"codeception/module-yii2": "^1.0.0",
+		"codeception/module-asserts": "^1.0.0"
 	},
 	"scripts":{
 		 "post-install-cmd": "php init --env=Development --overwrite=n"
-		
 	},
 	"config":{
-		"process-timeout":1800
+		"process-timeout": 1800,
+		"sort-packages": true,
+		"fxp-asset": {
+			"enabled": false
+		}
 	},
 	"extra":{
-		"yii\\composer\\Installer::postInstall":{
+		"yii\\composer\\Installer::postCreateProject": {
 			"setPermission":[
 				{
 					"backend/runtime":"0777",
@@ -65,17 +73,19 @@
 					"frontend/web/assets":"0777",
 					"console/runtime":"0777"
 				}
-				
 			],
-			"generateCookieValidationKey":[
-				"config/web.php"
-			]
-			
-		},
-		"asset-installer-paths":{
-			"npm-asset-library":"vendor/npm",
-			"bower-asset-library":"vendor/bower"
+			"yii\\composer\\Installer::postInstall": {
+				"generateCookieValidationKey": [
+					"config/web.php"
+				]
+			}
 		}
 		
-	}
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	]
 }
